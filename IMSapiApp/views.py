@@ -64,6 +64,7 @@ class PurchaseViewSet(viewsets.ModelViewSet):
             if inventory:
                 pur_quantity = int(request.data["pur_quantity"])
                 total_price = int(request.data["total_price"])
+                print(total_price)
                 total_pur_quantity = inventory.total_pur_quantity + pur_quantity
                 total_pur_price = inventory.total_pur_price + total_price
                 in_stock = inventory.in_stock + pur_quantity
@@ -79,7 +80,8 @@ class PurchaseViewSet(viewsets.ModelViewSet):
             else:
                 pur_quantity = int(request.data["pur_quantity"])
                 total_pur_quantity = pur_quantity
-                total_pur_price = int(request.data["total_price"])
+                total_price = int(request.data["total_price"])
+                total_pur_price = total_price
                 in_stock = pur_quantity
                 product = request.data["product"]
                 vendor = request.data["vendor"]
@@ -90,7 +92,6 @@ class PurchaseViewSet(viewsets.ModelViewSet):
                             "total_pur_price": total_pur_price,
                             "in_stock": in_stock,
                             "total_sale_quantity": 0,
-                            "total_pur_price": 0
                             }
 
                 inv_serializer = InventorySerializer(data=inv_data)
@@ -121,7 +122,7 @@ class SaleViewSet(viewsets.ModelViewSet):
             product=request.data["product"])
         if inventory:
             sale_quantity = int(request.data["sale_quantity"])
-            total_price = int(request.data["price"])
+            total_price = int(request.data["total_price"])
             # Inventory quantity Check for sale
 
             if sale_quantity <= inventory.in_stock:
