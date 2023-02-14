@@ -142,10 +142,13 @@ class SaleViewSet(viewsets.ModelViewSet):
 
                     if inv_serializer.is_valid():
                         inv_serializer.save()
+                return Response(data={'sale': sale_serializer.data, 'inv': inv_serializer.data})
 
-            return Response(sale_serializer.data)
+            else:
+                return Response("Sale quantity should be less than or equal to stock", status=status.HTTP_400_BAD_REQUEST)
+
         else:
-            return Response(sale_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 class InventoryViewSet(viewsets.ModelViewSet):
